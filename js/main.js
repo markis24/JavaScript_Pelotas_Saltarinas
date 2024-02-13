@@ -1,44 +1,50 @@
-// Preparació del canvas ----------------------
-/* Obté una referència a <canvas>, després crida al mètode getContext()
-  per definir un context al el que es pot començar a dibuisar
-  (ctx) és un objecte que representa l'àrea de dibuix del 
-  <canvas> y permet dibuixar elements 2D al damunt.
-
-  width and height són dreceres a l'ample i alt del canvas  que coincideixen
-  amb l'alt i ample del navegador (viewport)
-*/
-
+// Preparación del canvas
 import { Pilota } from "./Pilota.js";
 
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
-const width = (canvas.width = window.innerWidth);
-const height = (canvas.height = window.innerHeight);
+const width = canvas.width = window.innerWidth;
+const height = canvas.height = window.innerHeight;
 
 // Crear las pelotas saltarinas
-let pilota = []
-let Pilota1 = new Pilota(50, 100, 4, 4, "blue", 10);
-Pilota1.dibuixa(ctx);
-Pilota.mou(width,height);
-// Poner 
-ctx.fillStyle = "black";
-ctx.fillRect(0,0,canvas.width,canvas.height);
-// funció per generar un número aleatori entre dues xifres
-for (let index = 0; index < array.length; index++) {
+let pilota = new Pilota(50, 100, 4, 4, "blue", 10); // Cambiado el nombre de la variable
 
-  
+function loop() {
+  // Pintar el rectángulo de negro 
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, width, height);
+
+  // Array de Pilotes inicializado
+  let arrayPilotes = [];
+  for (let i = 0; i < 25; i++) {
+    let mida = random(10, 20);
+    let x = random(0 + mida, width - mida);
+    let y = random(0 + mida, height - mida);
+    let velX = random(-2, 2); // Agregué la generación de velocidades aleatorias
+    let velY = random(-2, 2);
+    let color = randomRGB();
+    let pilota = new Pilota(x, y, velX, velY, color, mida);
+    arrayPilotes.push(pilota);
+  }
+
+  // Recorriendo el array de Pilotes
+  for (let i = 0; i < arrayPilotes.length; i++) {
+    const pilota = arrayPilotes[i];
+    pilota.dibuixa(ctx);
+    pilota.mou(width, height);
+  }
+
+  requestAnimationFrame(loop);
 }
-
-requestAnimationFrame(loop);
+loop();
 
 function random(min, max) {
   const num = Math.floor(Math.random() * (max - min + 1)) + min;
   return num;
 }
 
-// funció per generar un color aleatori
-
+// Función para generar un color aleatorio
 function randomRGB() {
   return `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`;
 }
